@@ -5,11 +5,11 @@ export default function Logo() {
 
     return (
         <div className="flex items-center flex-shrink-0 text-th-primary-light mr-6">
-            <Link href={process.env.BACKEND_URL + "/"}>
+            <Link href="/">
                 <a aria-label={'LMNAs Cloud Solutions'}>
 
                     <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
-                        className="text-th-accent-medium fill-current h-8 w-8 mr-2" width="54" height="54" viewBox="0 0 276.000000 276.000000"
+                        className="text-th-background-cta fill-current h-8 w-8 mr-2" width="54" height="54" viewBox="0 0 276.000000 276.000000"
                         preserveAspectRatio="xMidYMid meet">
                         <metadata>
                             Created by potrace 1.14, written by Peter Selinger 2001-2017
@@ -22,9 +22,9 @@ export default function Logo() {
                     </svg>
                 </a>
             </Link>
-            <Link href={process.env.BACKEND_URL + "/"}>
+            <Link href="/">
                 <a aria-label={'LMNAs Cloud Solutions'}>
-                    <span className="font-semibold text-3xl tracking-tight text-gray-800">LMNAs</span>
+                    <span className="font-bold text-3xl tracking-tight text-gray-800">LMNAs</span>
                     <span className="text-xl tracking-normal text-yellow-500 text-opacity-90"></span>
                 </a>
             </Link>

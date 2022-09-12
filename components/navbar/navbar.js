@@ -8,65 +8,85 @@ import Logo from "./logo";
 import ToggleMobileMenu from "./toggleMobileMenu";
 import AppContext from '../../context/appContext';
 import Container from "../container";
-
+import Homeproducts from "../homeproduct";
+import Industries from "../industries";
 const industries = ['Retail', 'Education', 'Healthcare', 'Distribution', 'Manufacturing', 'Agriculture']
 
 
 const Navbar = ({ categories }) => {
-  //const cat = categories.map((category) => { return category.name })
   const menuItems = BuildMenu({ categories })
   const [mounted, setMounted] = useState(false);
   // When mounted on client, now we can show the UI
   useEffect(() => setMounted(true), []);
   const appContext = useContext(AppContext);
   if (!mounted) return null;
-  return (<div className=" h-12">
+  return (<div className="bg-th-background-primary  ">
     <Container>
-      <nav className="mx-auto flex items-center justify-between flex-wrap py-6">
-        <Logo />
-        {/**Handle Hamburger toggle and set the displayMobileMenu AppContext */}
-        <ToggleMobileMenu />
-        <div className={"w-full block flex-grow lg:flex lg:items-center lg:w-auto " + (appContext.displayMobileMenu ? " hidden" : null)}>
-          <MenuList menuItems={menuItems} />
-          {/**To be replaced with Typesense Search */}
-          {/** <Search /> */}
-          <div className="flex items-center flex-wrap lg:flex justify-between flex-row-reverse lg:flex-row">
-            <div className="mt-4 lg:mt-0">
-              <SunMoon />
-            </div>
-            {/** <Login /> */}
+    <nav className="md:mx-16 xl:mx-0 flex items-center justify-between flex-wrap py-6 ">
+      <Logo />
+      {/**Handle Hamburger toggle and set the display MobileMenu AppContext */}
+      <ToggleMobileMenu />
+      <div className={"w-full block flex-grow lg:flex  lg:items-center lg:w-auto " + (appContext.displayMobileMenu ? " hidden" : null)}>
+        <MenuList menuItems={menuItems} />
+        {/**To be replaced with Typesense Search 
+        <Search />*/}
+        <div className="flex items-center justify-between flex-row-reverse lg:flex-row">
+          <div className="mt-4 lg:mt-0">
+            <SunMoon />
           </div>
+         {/**  <Login />*/}
         </div>
-      </nav>
+      </div>
+    </nav>
     </Container>
   </div>
   )
 }
 
 export default Navbar
+
 function BuildMenu({ categories }) {
-  // const cat = categories.map((category) => { return category.name })
+  //const cat = categories.map((category) => { return {name: category.name, slug: category.slug}  })
   return [
-    { menu: 'Home',
-      href: '/'},
-    { menu: 'About',
-      href: 'about'},
-    { menu: 'Services',
-      href: '/#services' },
     {
-      menu: 'Technology',
-      href: '/#technology'
+      menu: 'About Us',
+      target: '/aboutus'
     },
     {
-      menu: 'Clients',
-      href: '/#clients'
-      // Uncomment below code to enable submenus
-      //    subMenus: [...cat]
-    }, 
-    {
-      menu: 'Contact',
-      href: '/contact'
+      menu: 'Products',
+      target: '',
+      subMenus:
+      [
+        {name:"ERP" ,href:"/products/erp"},
+        {name:"Ecommerce",href:"/products/erp"},
+        {name:"Digital Marketing",href:"/products/erp"}
+      ]
     },
-    //{ menu: 'Contact' }, { menu: 'Subscriptions' }
+    {
+      menu: 'Industries',
+      target: '',
+      subMenus:
+      [
+        {name:"Manufacturing",href:"/industries/manufacturing"},
+        {name:"Retail",href:"/industries/retail"},
+        {name:"Distribution",href:"/industries/distribution"},
+        {name:"Education",href:"/industries/education"},
+        {name:"Healthcare",href:"industries/healthcare"}
+      ],
+    },
+    {
+      menu: 'Services',
+      target: '',
+      subMenus:
+      [
+        {name:"Finance",href:"/services/finance"},
+        {name:"Hr",href:"/services/hr"},
+        {name:"Payroll",href:"/services/payroll"} 
+      ]
+    },
+    {
+      menu: 'Contact Us',
+      target: '/contactus'
+    }
   ]
 }

@@ -17,10 +17,11 @@ export default function MenuList({ menuItems }) {
 //Sub function to build the individual menu
 function Menu({ menuItem }) {
   return (
-    <a href={menuItem.target? menuItem.target : null} className="block ml-2 mt-4 lg:inline-block lg:mt-0 text-th-primary-medium hover:text-th-accent-medium mr-4">
+    <a href={menuItem.target? menuItem.target : null} className="block ml-2 mt-4 lg:inline-block lg:mt-0 text-th-text-dark hover:text-th-background-cta mr-10">
       {menuItem.menu}
       {menuItem.subMenus ? (
         <CollapseMenu subMenus={menuItem.subMenus} />
+        
       ) : null
       }
     </a>
