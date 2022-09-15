@@ -1,0 +1,26 @@
+version: "3.3"
+
+services:
+
+  traefik:
+    image: "srinath1204/lmnasux"
+    container_name: "nifty_johnson"
+    command:
+      #- "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+  lmnasux:
+    image: "traefik/lmnasux"
+    container_name: "simple-service"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.lmnasux.rule=Host(`lmnasux.localhost`)"
+      - "traefik.http.routers.lmnasux.entrypoints=web"
