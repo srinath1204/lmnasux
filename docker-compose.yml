@@ -1,26 +1,38 @@
-version: "3.3"
+version: '3.7'
 
 services:
+  landing-nextjs:
+    image: landing-nextjs
+    container_name: landing-nextjs
+    networks:
+      - proxy
+    build:
+      dockerfile: Dockerfile
+      context: ./
+      cache_from:
+      - landing-nextjs
+    restart: unless-stopped
 
-  traefik:
-    image: "srinath1204/lmnasux"
-    container_name: "nifty_johnson"
-    command:
-      #- "--log.level=DEBUG"
-      - "--api.insecure=true"
-      - "--providers.docker=true"
-      - "--providers.docker.exposedbydefault=false"
-      - "--entrypoints.web.address=:80"
-    ports:
-      - "80:80"
-      - "8080:8080"
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
-
-  lmnasux:
-    image: "traefik/lmnasux"
-    container_name: "simple-service"
+  landing-proxy:
+    image: landing-proxy
+    container_name: landing-proxy
+    networks:
+      - proxy
+    depends_on:
+      - landing-nextjs
+    build:
+      dockerfile: Dockerfile
+      context: ./nginx
+      cache_from:
+      - landing-proxy
+    restart: always
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.lmnasux.rule=Host(`lmnasux.localhost`)"
-      - "traefik.http.routers.lmnasux.entrypoints=web"
+      - traefik.http.routers.landing.rule=Host("${DOMAIN}")
+      - traefik.http.routers.landing.entrypoints=https
+      - traefik.http.routers.landing.tls=true
+      - traefik.http.routers.landing.tls.certresolver=${CERT_RESOLVER}
+      - traefik.docker.network=proxy
+
+networks:
+  proxy:
+    external: true
