@@ -1,38 +1,27 @@
-version: '3.7'
+version: '3'
 
-services:
-  landing-nextjs:
-    image: landing-nextjs
-    container_name: landing-nextjs
-    networks:
-      - proxy
+services: 
+  reverse-proxy:
+    # The official v2 Traefik docker image
+    image: traefik:v2.8
+    # Enables the web UI and tells Traefik to listen to docker
+    command: --api.insecure=true --providers.docker
+    ports:
+      # The HTTP port
+      - "80:80"
+      - 443:443
+      # The Web UI (enabled by --api.insecure=true)
+      - "8080:8080"
+    volumes:
+      # So that Traefik can listen to the Docker events
+      - /var/run/docker.sock:/var/run/docker.sock
+  node-server:
     build:
-      dockerfile: Dockerfile
       context: ./
-      cache_from:
-      - landing-nextjs
-    restart: unless-stopped
-
-  landing-proxy:
-    image: landing-proxy
-    container_name: landing-proxy
-    networks:
-      - proxy
-    depends_on:
-      - landing-nextjs
-    build:
       dockerfile: Dockerfile
-      context: ./nginx
-      cache_from:
-      - landing-proxy
-    restart: always
+    ports:
+      - "3000:3000"
+      
     labels:
-      - traefik.http.routers.landing.rule=Host("${DOMAIN}")
-      - traefik.http.routers.landing.entrypoints=https
-      - traefik.http.routers.landing.tls=true
-      - traefik.http.routers.landing.tls.certresolver=${CERT_RESOLVER}
-      - traefik.docker.network=proxy
-
-networks:
-  proxy:
-    external: true
+      - traefik.enable=true
+      - traefik.http.routers.mautic.rule=Host(`lmnasux.docker.localhost`) 
